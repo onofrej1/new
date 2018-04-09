@@ -84,7 +84,7 @@ export default {
     created() {
         this.setActiveResource("article");
         this.buildTable();
-        this.getData();
+        this.fetchResourceData("article");
     },
     methods: {
         ...mapActions(["setActiveResource", "fetchResourceData"]),
@@ -104,10 +104,7 @@ export default {
                 this.model = item;
                 this.buildForm(item);
                 this.activeForm = true;
-            },
-            getData: function() {
-                this.fetchResourceData("article");
-            },
+            },            
             onSubmit(evt) {
                 evt.preventDefault();
                 console.log(this.model.title);

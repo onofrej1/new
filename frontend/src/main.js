@@ -12,8 +12,16 @@ import 'vuetify/dist/vuetify.min.css'
 import 'vue-awesome/icons'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+var VueTruncate = require('vue-truncate-filter')
 
+Vue.filter('striphtml', function (value) {
+  var div = document.createElement("div");
+  div.innerHTML = value;
+  var text = div.textContent || div.innerText || "";
+  return text;
+});
 
+Vue.use(VueTruncate);
 Vue.use(BootstrapVue);
 Vue.component('icon', Icon)
 Vue.use(Vuetify)

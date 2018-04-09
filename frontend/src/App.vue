@@ -1,30 +1,36 @@
 <template>
   <admin-layout v-if="this.$route.meta.adminLayout" :models="models" >
     <template slot="content-header">
-      
+
     </template>
     <template slot="content">
       <router-view></router-view>
     </template>
   </admin-layout>
   <div v-else>
-    page
+    <page-header></page-header>
+    <router-view></router-view>
+    <page-footer></page-footer>
   </div>
 </template>
 <script>
   import AdminLayout from './components/Adminlte/Layout';
   import CrudModels from './CrudModels';
+  import PageHeader from './components/Common/PageHeader';
+  import PageFooter from './components/Common/PageFooter';
 
   export default {
     name: 'app',
     components: {
-      AdminLayout
+      AdminLayout,
+      PageHeader,
+      PageFooter,      
     },
     mounted: function() {
-      
+
     },
     data() {
-      
+
       return {
         models: CrudModels,
         msg: 'Welcome to Your Vue.js App',
