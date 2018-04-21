@@ -17,16 +17,7 @@ class MenuController extends Controller
         return response()->json(Menu::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -48,17 +39,7 @@ class MenuController extends Controller
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Menu  $menu
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Menu $menu)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +50,7 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        //
+	
     }
 
     /**

@@ -7,7 +7,10 @@
         Page
     </template>
     <template slot="content">
-        article {{ article.title }}
+        <h3>{{ article.title }}</h3>
+        <p>
+          <p v-html="article.content">
+        </p>
     </template>
     <template slot="sidebar-header">
         Aktuality
@@ -41,8 +44,6 @@ export default {
     },
     created() {
       this.resourceData.article || this.fetchResourceData("article");
-      console.log(this.$route.params.id);
-        //this.fetchResourceData("article");
     },
     methods: {
         ...mapActions(["fetchResourceData"]),

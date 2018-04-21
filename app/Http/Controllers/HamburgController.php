@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\MenuItem;
 use Illuminate\Http\Request;
 
-class MenuItemController extends Controller
+class HamburgController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +13,19 @@ class MenuItemController extends Controller
      */
     public function index()
     {
-        return response()->json(MenuItem::all());
+        //
     }
-    
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -31,38 +40,44 @@ class MenuItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\MenuItem  $menuItem
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(MenuItem $menuItem)
+    public function show($id)
     {
         //
     }
-    
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\MenuItem  $menuItem
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-	$data = $request->all();
-	\Log::info($data);
-	MenuItem::updateOrCreate(['id' => $data['id']], $data);
-
-	return response()->json(['status' => 'ok', 'data' => $data]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\MenuItem  $menuItem
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MenuItem $menuItem)
+    public function destroy($id)
     {
         //
     }

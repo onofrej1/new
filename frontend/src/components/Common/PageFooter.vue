@@ -5,7 +5,7 @@
 <b-navbar type="dark" variant="black" toggleable>
     <b-container>
         <div class="navbar-text float-left">
-            <div>O5 bežecký klub FURČA </div>
+            <div>O5 bežecký klub FURČA</div>
             <div>Tokajícka 2, 040 22 Košice Mobil: 0904 246 060</div>
             <div>E-mail: bohunek.zdenek@maratonfurca.sk</div>
         </div>

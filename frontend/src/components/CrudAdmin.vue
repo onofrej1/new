@@ -68,12 +68,10 @@ export default {
             table: [],
             form: [],
             model: {},
-            fields: ["id", "title", "actions"],
         };
     },
     computed: {
         ...mapState(["activeResource", "resourceData"]),
-            ...mapGetters(["getActiveResourceData"]),
             activeResourceData: function() {
                 return this.resourceData[this.activeResource];
             },
@@ -82,12 +80,12 @@ export default {
             }
     },
     created() {
-        this.setActiveResource("article");
+        this.setActiveResource("menuItem");
         this.buildTable();
-        this.fetchResourceData("article");
+        this.fetchResourceData("menuItem");
     },
     methods: {
-        ...mapActions(["setActiveResource", "fetchResourceData"]),
+        ...mapActions(["setActiveResource", "fetchResourceData", "saveResourceData"]),
             getOptions: function(resourceName, field) {
                 let resource = this.resourceData[resourceName];
                 let options =
@@ -104,10 +102,11 @@ export default {
                 this.model = item;
                 this.buildForm(item);
                 this.activeForm = true;
-            },            
+            },
             onSubmit(evt) {
                 evt.preventDefault();
-                console.log(this.model.title);
+                console.log(this.model);
+                this.saveResourceData(this.model);
             },
             onReset() {
               this.activeForm = false;

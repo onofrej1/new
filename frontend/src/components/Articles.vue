@@ -8,15 +8,15 @@
     </template>
     <template slot="content">
         <div v-for="article in articles" :key="article.id">
-        <b-media>
-            <b-img thumbnail slot="aside" blank blank-color="#ccc" :src="'./../assets/images/'+article.id+'.jpg'" width="120" alt="placeholder" />
-            <h5 class="mt-0">{{ article.title }}</h5>
-            <p>{{ article.content|striphtml|truncate(300) }}>
-              <router-link :to="{name: 'article', params: {id: article.id}}">
-                <b-button variant="default" :size="sm">Viac</b-button>
-              </router-link>
-            </p>
-        </b-media>
+            <b-media>
+                <b-img thumbnail slot="aside" blank blank-color="#ccc" :src="'./../assets/images/'+article.id+'.jpg'" width="120" alt="placeholder" />
+                <h5 class="mt-0">{{ article.title }}</h5>
+                <p>{{ article.content|striphtml|truncate(300) }}>
+                    <router-link :to="{name: 'article', params: {id: article.id}}">
+                        <b-button variant="default">Viac</b-button>
+                    </router-link>
+                </p>
+            </b-media>
         </div>
     </template>
     <template slot="sidebar-header">
