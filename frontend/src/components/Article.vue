@@ -9,8 +9,8 @@
     <template slot="content">
         <h3>{{ article.title }}</h3>
         <p>
-          <p v-html="article.content">
-        </p>
+            <p v-html="article.content">
+            </p>
     </template>
     <template slot="sidebar-header">
         Aktuality
@@ -36,14 +36,14 @@ export default {
         ...mapState(["resourceData"]),
             article: function() {
                 if (!this.resourceData.article) {
-                   return {};
+                    return {};
                 }
                 let id = this.$route.params.id;
                 return this.resourceData.article.find(article => article.id == id);
             }
     },
     created() {
-      this.resourceData.article || this.fetchResourceData("article");
+        this.resourceData.article || this.fetchResourceData("article");
     },
     methods: {
         ...mapActions(["fetchResourceData"]),

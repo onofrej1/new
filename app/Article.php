@@ -8,6 +8,8 @@ class Article extends Model
 {
     protected $table = 'article';
 
+    protected $fillable = ['title', 'author', 'source', 'content'];
+
     /**
      * The roles that belong to the user.
      */

@@ -21,10 +21,16 @@ Vue.filter('striphtml', function (value) {
   return text;
 });
 
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
 Vue.use(VueTruncate);
 Vue.use(BootstrapVue);
 Vue.component('icon', Icon)
-Vue.use(Vuetify)
+//Vue.use(Vuetify)
 
 Vue.config.productionTip = false
 
@@ -33,6 +39,8 @@ new Vue({
   el: '#app',
   store,
   router,
-  components: { App },
+  components: {
+    App,
+   },
   template: '<App/>'
 })

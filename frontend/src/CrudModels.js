@@ -17,7 +17,7 @@ const article = {
   form: [
     { name: 'title', type: 'text' },
     { name: 'author', type: 'text' },
-    { name: 'content', type: 'textarea' },
+    { name: 'content', type: 'editor' },
     { name: 'tags', type: 'pivotRelation', resourceTable: 'tag', show: 'title', label: 'Tags' },
   ],
   list: [
@@ -43,7 +43,7 @@ const page = {
   title: "Pages",
   form: [
     { label: 'Title', name: 'title', type: 'text' },
-    { type: "textarea", label: "Body", rows: 8, name: 'body' },
+    { type: "editor", label: "Body", name: 'body' },
   ],
   list: [
     { field: 'title', label: 'Title', render: (row) => `<div>${row.title}</div>` }

@@ -4,7 +4,7 @@
       <header class="main-header">
         <a href="/" class="logo">
           <span class="logo-mini">logo</span>
-          <span class="logo-lg"></span>
+          <span class="logo-lg">BK Furca</span>
         </a>
         <nav class="navbar navbar-expand navbar-light navbar-custom">
         </nav>
@@ -13,11 +13,8 @@
         <section class="sidebar">
           <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Menu</li>
-            <li class="" v-for="modelName in modelNames">
-              <a href="">
-                <icon name="list"></icon>
-                <span>{{ modelName }}</span>
-                </a>
+            <li v-for="modelName in modelNames">
+                <router-link :to="'/crud/'+modelName"><icon name="list"></icon> {{ modelName }}</router-link>
             </li>
           </ul>
         </section>
@@ -40,31 +37,36 @@
         </strong> All rights reserved.
       </footer>
     </div>
-     {{ modelNames }}
   </div>
 </template>
 <script>
   import "./../../assets/adminlte/css/AdminLTE.css";
   import "./../../assets/adminlte/css/skins/_all-skins.css";
+  import {
+      mapState, mapActions, mapGetters
+  }
+  from "vuex";
 
   export default {
     name: 'layout',
     props: ['models'],
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App',
-        
       };
     },
     computed: {
       modelNames: function() {
         return  Object.keys(this.models);
-      }
+      },
+      ...mapState([])
+    },
+    methods: {
+        ...mapActions([]),
     }
   };
 
 </script>
-<style scoped>
-
+<style>
+ 
 
 </style>

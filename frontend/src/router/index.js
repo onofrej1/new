@@ -25,7 +25,7 @@ export default new Router({
       component: Page
     },
     {
-      path: '/crud',
+      path: '/crud/:resource',
       name: 'crud',
       component: CrudAdmin,
       meta: {

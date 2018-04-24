@@ -17,7 +17,7 @@ class ArticleController extends Controller
         return response()->json(Article::with('tags')->get());
     }
 
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,19 +26,16 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article = new Article();
+        $article->fill($request->all());
+        $article->save();
+
+        $article->tags()->sync($request->tags);
+
+        return response()->json($article);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Article $article)
-    {
-        //
-    }
+
 
 
     /**
@@ -50,7 +47,11 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+      $article->fill($request->all());
+      $article->tags()->sync($request->tags);
+      $article->save();
+
+      return response()->json($article);
     }
 
     /**

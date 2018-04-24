@@ -24,7 +24,7 @@
     components: {
       AdminLayout,
       PageHeader,
-      PageFooter,      
+      PageFooter,
     },
     mounted: function() {
 
@@ -40,7 +40,13 @@
 
 </script>
 <style>
+.table thead tr th {
+  background-color:#3c8dbc !important;
+}
 
+.table thead tr {
+  height: 40px !important;
+}
 
 .table th, .table td {
   vertical-align: middle;

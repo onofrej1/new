@@ -21,7 +21,7 @@ export default new Vuex.Store({
       state.activeResource = payload;
     },
     setResourceData(state, payload) {
-      state.resourceData[payload.resourceName] = payload.resourceData;
+      //state.resourceData[payload.resourceName] = payload.resourceData;
       state.resourceData = {
         ...state.resourceData,
         [payload.resourceName]: payload.resourceData
