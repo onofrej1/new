@@ -1,29 +1,25 @@
 <template>
-<sidebar-layout>
-  <template slot="content-header">
-        Page
+  <sidebar-layout>
+    <template slot="content-header">
+      Page
     </template>
-  <template slot="content">
-       <div v-html="page.body"></div>
+    <template slot="content">
+      <div v-html="page.body"></div>
     </template>
-  <template slot="sidebar-header">
-        Aktuality
+    <template slot="sidebar-header">
+      Aktuality
     </template>
-</sidebar-layout>
+  </sidebar-layout>
 </template>
 
 <script>
-import {
-  mapState,
-  mapActions
-}
-from "vuex";
-import SidebarLayout from './Common/SidebarLayout';
+import { mapState, mapActions } from "vuex";
+import SidebarLayout from "./Common/SidebarLayout";
 
 export default {
-  name: 'Page',
+  name: "Page",
   components: {
-    SidebarLayout,
+    SidebarLayout
   },
   computed: {
     ...mapState(["resourceData"]),
@@ -40,7 +36,8 @@ export default {
     this.fetchResourceData("page");
   },
   methods: {
-    ...mapActions(["fetchResourceData"]),
+    ...mapActions(["fetchResourceData"])
   }
 };
 </script>
+

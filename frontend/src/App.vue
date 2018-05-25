@@ -14,41 +14,38 @@
   </div>
 </template>
 <script>
-  import AdminLayout from './components/Adminlte/Layout';
-  import CrudModels from './CrudModels';
-  import PageHeader from './components/Common/PageHeader';
-  import PageFooter from './components/Common/PageFooter';
+import AdminLayout from "./components/Adminlte/Layout";
+import CrudModels from "./CrudModels";
+import PageHeader from "./components/Common/PageHeader";
+import PageFooter from "./components/Common/PageFooter";
 
-  export default {
-    name: 'app',
-    components: {
-      AdminLayout,
-      PageHeader,
-      PageFooter,
-    },
-    mounted: function() {
-
-    },
-    data() {
-
-      return {
-        models: CrudModels,
-        msg: 'Welcome to Your Vue.js App',
-      };
-    },
-  };
-
+export default {
+  name: "app",
+  components: {
+    AdminLayout,
+    PageHeader,
+    PageFooter
+  },
+  mounted: function() {},
+  data() {
+    return {
+      models: CrudModels,
+      msg: "Welcome to Your Vue.js App"
+    };
+  }
+};
 </script>
 <style>
-.table thead tr th {
-  background-color:#3c8dbc !important;
+.xxx table thead tr th {
+  background-color: #3c8dbc !important;
 }
 
-.table thead tr {
+.xxx table thead tr {
   height: 40px !important;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   vertical-align: middle;
 }
 
@@ -92,8 +89,7 @@ h1.box-heading {
 .flex-container {
   display: flex;
   flex-direction: row;
-	 flex-wrap: wrap;
-
+  flex-wrap: wrap;
 }
 
 .adminBgColor {
@@ -101,5 +97,12 @@ h1.box-heading {
   background-color: #3c8dbc;
 }
 
+.el-form--label-top .el-form-item__label {
+  padding: 2px;
+}
 
+.el-form-item__label {
+  margin-left: 2px;
+  line-height: 20px;
+}
 </style>

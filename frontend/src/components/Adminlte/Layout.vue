@@ -40,33 +40,27 @@
   </div>
 </template>
 <script>
-  import "./../../assets/adminlte/css/AdminLTE.css";
-  import "./../../assets/adminlte/css/skins/_all-skins.css";
-  import {
-      mapState, mapActions, mapGetters
+import "./../../assets/adminlte/css/AdminLTE.css";
+import "./../../assets/adminlte/css/skins/_all-skins.css";
+import { mapState, mapActions, mapGetters } from "vuex";
+
+export default {
+  name: "layout",
+  props: ["models"],
+  data() {
+    return {};
+  },
+  computed: {
+    modelNames: function() {
+      return Object.keys(this.models);
+    },
+    ...mapState([])
+  },
+  methods: {
+    ...mapActions([])
   }
-  from "vuex";
-
-  export default {
-    name: 'layout',
-    props: ['models'],
-    data() {
-      return {
-      };
-    },
-    computed: {
-      modelNames: function() {
-        return  Object.keys(this.models);
-      },
-      ...mapState([])
-    },
-    methods: {
-        ...mapActions([]),
-    }
-  };
-
+};
 </script>
 <style>
- 
 
 </style>
