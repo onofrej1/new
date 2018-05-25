@@ -10,9 +10,6 @@ class Article extends Model
 
     protected $fillable = ['title', 'author', 'source', 'content'];
 
-    /**
-     * The roles that belong to the user.
-     */
     public function tags()
     {
         return $this->belongsToMany('App\Tag', 'article_tag', 'article_id', 'tag_id');

@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resources([
     'article' => 'ArticleController',
+    'hamburg' => 'HamburgController',
     'page' => 'PageController',
     'menu' => 'MenuController',
     'menuItem' => 'MenuItemController',
