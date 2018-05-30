@@ -1,7 +1,6 @@
 <template>
   <admin-layout v-if="this.$route.meta.adminLayout" :models="models" >
     <template slot="content-header">
-
     </template>
     <template slot="content">
       <router-view></router-view>
@@ -36,6 +35,10 @@ export default {
 };
 </script>
 <style>
+.block {
+  width: 100%;
+}
+
 .xxx table thead tr th {
   background-color: #3c8dbc !important;
 }

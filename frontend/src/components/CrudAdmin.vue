@@ -1,63 +1,70 @@
 <template>
-  <Row>
-    <Col :span="activeForm ? 16 : 24" :push="activeForm ? 4 : 0">
-    <div class="box box-primary">
-      <div class="box-header with-border crud-headerx">
-        <strong>{{ activeResource|capitalize }} list</strong>
-        <Button  @click="createItem()">
-          <Icon type="plus"></Icon>
-          Add new
-        </Button>
-      </div>
-      <div class="box-body">
+  <el-row>
+    <el-col :span="activeForm ? 16 : 24" :offset="activeForm ? 4 : 0">
+      <div class="box box-primary">
+        <div class="box-header with-border crud-header">
+          <h3 class="box-title">{{ activeResource|capitalize }}
+          </h3>
+        </div>
+        <div class="box-body">
+          <div v-if="activeForm">
+            <el-form ref="form" :model="model" label-position="right">
+              <template v-for="field in form">
+                <el-form-item :key="field.name">
+                  <template slot="label">
+                    <strong v-if="field.name != 'id'">{{ field.label || field.name }}</strong>
+                  </template>   
+                  <el-input v-if="field.type==='text'" v-model="model[field.name]"></el-input>
+                  <el-input type="textarea" :rows="5" v-if="field.type==='editor'" v-model="model[field.name]"></el-input>
 
-        <div v-if="activeForm">
-          <Form :model="model" label-position="top" v-if="activeForm">
+                  <el-select class="block" v-if="field.type==='relation'" v-model="model[field.name]">
+                    <el-option v-for="option in getOptions(field.resourceTable, field.show)" :key="option.value" :label="option.text" :value="option.value">
+                    </el-option>
+                  </el-select>
 
-            <template v-for="field in form" v-if="field.name != 'id'">
-              <input type="hidden" :key="field.name" v-model="model.id" v-if="field.name == 'id'" />
-              <FormItem :key="field.name" :label="field.label || field.name">
+                  <el-checkbox-group v-if="field.type==='pivotRelation'" v-model="model[field.name]">
+                    <el-checkbox :key="option.value" :label="option.value" v-for="option in getOptions(field.resourceTable, field.show)">
+                      {{ option.text }}
+                    </el-checkbox>
+                  </el-checkbox-group>
 
-                <Input v-if="field.type==='text'" size="large" v-model="model[field.name]"></Input>
-                <Input v-if="field.type==='textarea'" type="textarea" v-model="model[field.name]" :autosize="{minRows: 4,maxRows: 7}"></Input>
-                <DatePicker type="datetime" v-if="field.type==='datepicker'" style="width:100%" format="yyyy-MM-dd HH:mm" v-model="model[field.name]"></DatePicker>
-                <Select v-model="model[field.name]" v-if="field.type==='relation'">
-                  <Option v-for="item in getOptions(field.resourceTable, field.show)" :value="item.value" :key="item.value">{{ item.text }}</Option>
-                </Select>
-                <textarea v-model="model[field.name]" class="editor" v-if="field.type==='editor'"></textarea>
-                <CheckboxGroup v-if="field.type==='pivotRelation'" v-model="model[field.name]">
-                  <Checkbox :key="item.label" v-for="item in getOptions(field.resourceTable, field.show)" :label="item.value" v-if="field.type==='pivotRelation'">
-                    {{ item.text }}
-                  </Checkbox>
-                </CheckboxGroup>
+                </el-form-item>
+              </template>
+              <div class="float-right">
+              <el-button type="primary" icon="el-icon-success" @click="onSubmit">
+                Save
+              </el-button>
+              <el-button type="danger" icon="el-icon-error">Cancel</el-button>
+              </div>
+            </el-form>
 
-              </FormItem>
-            </template>
-            <FormItem>
-              <Button type="primary" size="large" @click="onSubmit(model)">
-                <Icon type="ios-checkmark" size="16"></Icon> Save
-              </Button>
-              <Button type="secondary" size="large" @click="onReset()">
-                <Icon type="ios-close-outline" size="16"></Icon> Cancel
-              </Button>
-            </FormItem>
-          </Form>
+          </div>
+
+          <el-table v-if="!activeForm" :data="activeResourceData" stripe style="width: 100%">
+            <el-table-column sortable :key="field.value" v-for="field in table" :prop="field.value" :label="field.text">
+            </el-table-column>
+            <el-table-column label="Edit/Delete">
+              <template slot-scope="scope">
+                <el-button size="mini" type="secondary" @click="editItem(scope.row)">
+                  <icon name="edit" scale="0.7"></icon> Edit
+                </el-button>
+                <el-button size="mini" type="danger">
+                  <icon name="trash" scale="0.7"></icon> Delete
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
 
         </div>
-
-        <Table stripe :columns="table" :data="activeResourceData" v-if="!activeForm"></Table>
-
       </div>
-    </div>
-    </Col>
-  </Row>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 import axios from "axios";
 import CrudModels from "./../CrudModels";
-
-//import Editor from "@tinymce/tinymce-vue";
+import Editor from "@tinymce/tinymce-vue";
 
 import { mapState, mapActions, mapGetters } from "vuex";
 
@@ -69,21 +76,11 @@ export default {
       models: CrudModels,
       table: [],
       form: [],
-      model: {},
-      headers: [
-        {
-          text: "Id",
-          value: "id"
-        },
-        {
-          text: "Title",
-          value: "title"
-        }
-      ]
+      model: {}
     };
   },
   components: {
-    //editor: Editor
+    editor: Editor
   },
   computed: {
     ...mapState(["activeResource", "resourceData"]),
@@ -99,7 +96,7 @@ export default {
       let resource = this.$route.params.resource;
       this.activeForm = false;
       this.setActiveResource(resource);
-      this.buildTable();
+      this.makeTable();
       this.fetchResourceData(resource);
     }
   },
@@ -130,12 +127,9 @@ export default {
       this.model = item;
       this.buildForm(item);
       this.activeForm = true;
-
-      ClassicEditor.create(document.querySelector(".editor"));
     },
     onSubmit(evt) {
-      //evt.preventDefault();
-      console.log(this.model.content);
+      evt.preventDefault();
       this.saveResourceData(this.model);
       this.fetchResourceData(this.resourceName);
       this.model = {};
@@ -144,66 +138,14 @@ export default {
     onReset() {
       this.activeForm = false;
     },
-
-    buildTable() {
-      let that = this;
+    makeTable() {
       this.table = [];
-      var actions = {
-        title: "Name",
-        key: "name",
-        render: (h, params) => {
-          return h("div", [
-            h(
-              "Button",
-              {
-                props: {
-                  type: "secondary",
-                  icon: "compose"
-                },
-                style: "margin-right: 5px",
-                on: {
-                  click: () => {
-                    that.editItem(params.row);
-                  }
-                }
-              },
-              "Edit"
-            ),
-            h(
-              "Button",
-              {
-                props: {
-                  type: "error",
-                  icon: "trash-b"
-                },
-                on: {
-                  click: () => {
-                    that.editItem(params.row);
-                  }
-                }
-              },
-              "Delete"
-            )
-          ]);
-        }
-      };
-
       for (let prop of this.resourceSettings.list) {
-        let row = {
-          title: prop.label || prop.field,
-          key: prop.field
-        };
-        if (prop.render) {
-          row.render = (h, params) => {
-            return h("div", prop.render(params));
-          };
-        }
-        if (prop.renderHtml) {
-          row.render = prop.renderHtml;
-        }
-        this.table.push(row);
+        this.table.push({
+          text: prop.field,
+          value: prop.field
+        });
       }
-      this.table.push(actions);
     },
     buildForm(row) {
       this.form = [
@@ -220,6 +162,7 @@ export default {
           let value =
             row[name] instanceof Array ? row[name].map(v => v.id) : row[name];
           row[name] = value;
+          console.log(value);
         }
         field = {
           ...prop
@@ -231,13 +174,14 @@ export default {
 
         this.form.push(field);
       }
+      //console.log(this.form);
     }
   }
 };
 </script>
-
 <style>
-.crud-header {
+.crud-headerxx {
   padding: 0 0 0 10px !important;
+  margin: 0px;
 }
 </style>

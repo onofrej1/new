@@ -13,8 +13,11 @@
         <section class="sidebar">
           <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Menu</li>
-            <li v-for="modelName in modelNames">
-                <router-link :to="'/crud/'+modelName"><icon name="list"></icon> {{ modelName }}</router-link>
+            <li v-for="modelName in modelNames" :key="modelName">
+                <router-link :to="'/crud/'+modelName">
+                  <icon name="list"></icon>
+                 {{ modelName }}
+                </router-link>
             </li>
           </ul>
         </section>
@@ -62,5 +65,4 @@ export default {
 };
 </script>
 <style>
-
 </style>
