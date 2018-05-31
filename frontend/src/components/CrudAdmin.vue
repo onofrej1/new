@@ -13,7 +13,7 @@
                 <el-form-item :key="field.name">
                   <template slot="label">
                     <strong v-if="field.name != 'id'">{{ field.label || field.name }}</strong>
-                  </template>   
+                  </template>
                   <el-input v-if="field.type==='text'" v-model="model[field.name]"></el-input>
                   <el-input type="textarea" :rows="5" v-if="field.type==='editor'" v-model="model[field.name]"></el-input>
 
@@ -31,10 +31,10 @@
                 </el-form-item>
               </template>
               <div class="float-right">
-              <el-button type="primary" icon="el-icon-success" @click="onSubmit">
-                Save
-              </el-button>
-              <el-button type="danger" icon="el-icon-error">Cancel</el-button>
+                <el-button type="primary" icon="el-icon-success" @click="onSubmit">
+                  Save
+                </el-button>
+                <el-button type="danger" icon="el-icon-error">Cancel</el-button>
               </div>
             </el-form>
 
@@ -62,126 +62,130 @@
 </template>
 
 <script>
-import axios from "axios";
-import CrudModels from "./../CrudModels";
-import Editor from "@tinymce/tinymce-vue";
+  import axios from "axios";
+  import CrudModels from "./../CrudModels";
+  import Editor from "@tinymce/tinymce-vue";
 
-import { mapState, mapActions, mapGetters } from "vuex";
+  import {
+    mapState,
+    mapActions,
+    mapGetters
+  } from "vuex";
 
-export default {
-  name: "admin",
-  data() {
-    return {
-      activeForm: false,
-      models: CrudModels,
-      table: [],
-      form: [],
-      model: {}
-    };
-  },
-  components: {
-    editor: Editor
-  },
-  computed: {
-    ...mapState(["activeResource", "resourceData"]),
-    activeResourceData: function() {
-      return this.resourceData[this.activeResource];
+  export default {
+    name: "admin",
+    data() {
+      return {
+        activeForm: false,
+        models: CrudModels,
+        table: [],
+        form: [],
+        model: {}
+      };
     },
-    resourceSettings: function() {
-      return this.models[this.activeResource];
-    }
-  },
-  watch: {
-    $route(to, from) {
-      let resource = this.$route.params.resource;
-      this.activeForm = false;
-      this.setActiveResource(resource);
-      this.makeTable();
-      this.fetchResourceData(resource);
-    }
-  },
-  methods: {
-    ...mapActions([
-      "setActiveResource",
-      "fetchResourceData",
-      "saveResourceData"
-    ]),
-    getOptions: function(resourceName, field) {
-      let resource = this.resourceData[resourceName];
-      let options =
-        resource &&
-        resource.map(data => {
-          return {
-            value: data.id,
-            text: data[field]
-          };
-        });
-      return options;
+    components: {
+      editor: Editor
     },
-    createItem: function() {
-      this.model = {};
-      this.buildForm(null);
-      this.activeForm = true;
-    },
-    editItem: function(item) {
-      this.model = item;
-      this.buildForm(item);
-      this.activeForm = true;
-    },
-    onSubmit(evt) {
-      evt.preventDefault();
-      this.saveResourceData(this.model);
-      this.fetchResourceData(this.resourceName);
-      this.model = {};
-      this.activeForm = false;
-    },
-    onReset() {
-      this.activeForm = false;
-    },
-    makeTable() {
-      this.table = [];
-      for (let prop of this.resourceSettings.list) {
-        this.table.push({
-          text: prop.field,
-          value: prop.field
-        });
+    computed: {
+      ...mapState(["activeResource", "resourceData"]),
+      activeResourceData: function () {
+        return this.resourceData[this.activeResource];
+      },
+      resourceSettings: function () {
+        return this.models[this.activeResource];
       }
     },
-    buildForm(row) {
-      this.form = [
-        {
+    watch: {
+      $route(to, from) {
+        let resource = this.$route.params.resource;
+        this.activeForm = false;
+        this.setActiveResource(resource);
+        this.makeTable();
+        this.fetchResourceData(resource);
+      }
+    },
+    methods: {
+      ...mapActions([
+        "setActiveResource",
+        "fetchResourceData",
+        "saveResourceData"
+      ]),
+      getOptions: function (resourceName, field) {
+        let resource = this.resourceData[resourceName];
+        let options =
+          resource &&
+          resource.map(data => {
+            return {
+              value: data.id,
+              text: data[field]
+            };
+          });
+        return options;
+      },
+      createItem: function () {
+        this.model = {};
+        this.buildForm(null);
+        this.activeForm = true;
+      },
+      editItem: function (item) {
+        this.model = item;
+        this.buildForm(item);
+        this.activeForm = true;
+      },
+      onSubmit(evt) {
+        evt.preventDefault();
+        this.saveResourceData(this.model);
+        this.fetchResourceData(this.resourceName);
+        this.model = {};
+        this.activeForm = false;
+      },
+      onReset() {
+        this.activeForm = false;
+      },
+      makeTable() {
+        this.table = [];
+        for (let prop of this.resourceSettings.list) {
+          this.table.push({
+            text: prop.field,
+            value: prop.field
+          });
+        }
+      },
+      buildForm(row) {
+        this.form = [{
           name: "id",
           type: "hidden"
-        }
-      ];
-      let field;
+        }];
+        let field;
 
-      for (let prop of this.resourceSettings.form) {
-        let name = prop.name;
-        if (row) {
-          let value =
-            row[name] instanceof Array ? row[name].map(v => v.id) : row[name];
-          row[name] = value;
-          console.log(value);
-        }
-        field = {
-          ...prop
-        };
+        for (let prop of this.resourceSettings.form) {
+          let name = prop.name;
+          if (row) {
+            let value =
+              row[name] instanceof Array ? row[name].map(v => v.id) : row[name];
+            row[name] = value;
+            console.log(value);
+          }
+          field = {
+            ...prop
+          };
 
-        if (prop.type == "relation" || prop.type == "pivotRelation") {
-          this.fetchResourceData(prop.resourceTable);
-        }
+          if (prop.type == "relation" || prop.type == "pivotRelation") {
+            this.fetchResourceData(prop.resourceTable);
+          }
 
-        this.form.push(field);
+          this.form.push(field);
+        }
+        //console.log(this.form);
       }
-      //console.log(this.form);
     }
-  }
-};
+  };
+
 </script>
 <style>
-.crud-headerxx {
-  padding: 0 0 0 10px !important;
-  margin: 0px;
-}
+  .crud-headerxx {
+    padding: 0 0 0 10px !important;
+    margin: 0px;
+  }
+
 </style>
