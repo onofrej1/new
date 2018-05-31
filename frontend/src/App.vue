@@ -39,6 +39,8 @@ export default {
 };
 </script>
 <style>
+
+
 .block {
   width: 100%;
 }

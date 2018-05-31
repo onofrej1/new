@@ -2,25 +2,33 @@
       <v-container fluid>
         <v-layout row>
           <v-flex v-if="activeForm" offset-md3 md6>
-       
+            <v-card class="elevation-12">
             <v-toolbar>
               <v-toolbar-title>{{ modelName }}</v-toolbar-title>
             </v-toolbar>
 
-
+            <v-card-text>
             <v-form v-model="valid">
               <template v-for="field in form">
-                <v-text-field :key="field.name" v-if="field.type==='text'" v-model="model[field.name]" :rules="nameRules" :counter="10" label="Name"
-                  required></v-text-field>
+                <v-text-field :key="field.name" 
+                v-if="field.type==='text'" 
+                v-model="model[field.name]" 
+                :label="field.label || field.name"
+                required>
+                </v-text-field>
               </template>
-
-              <v-btn color="primary" @click="submit">
+              </v-form>
+              </v-card-text>
+              <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="onSubmit">
                 Save
               </v-btn>
-              <v-btn @click="clear">Cancel</v-btn>
-            </v-form>
+              <v-btn @click="clear">Cancel</v-btn>            
+            </v-card-actions>
+            </v-card>
           </v-flex>
-          <v-flex v-if="!activeForm">
+          <v-flex v-if="!activeForm" offset-md1 md10>
 
         <v-data-table d-block  :headers="table" :items="activeResourceData" hide-actions class="elevation-1">
           <template slot="items" slot-scope="props">
@@ -118,7 +126,7 @@ export default {
         {
           text: "id",
           value: "id",
-          aligh: "right"
+          align: "right"
         }
       ];
       for (let prop of this.resourceSettings.list) {
@@ -128,6 +136,10 @@ export default {
           align: "right"
         });
       }
+      /*this.table.push({
+        text: 'action',
+        class: 'text-xs-right'
+      });*/
     },
     buildForm(row) {
       this.form = [
