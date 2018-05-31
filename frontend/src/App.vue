@@ -1,19 +1,22 @@
 <template>
-  <admin-layout v-if="this.$route.meta.adminLayout" :models="models" >
+<v-app>
+  <dark-layout v-if="this.$route.meta.adminLayout" :models="models" >
     <template slot="content-header">
     </template>
     <template slot="content">
       <router-view></router-view>
     </template>
-  </admin-layout>
+  </dark-layout>
   <div v-else>
     <page-header></page-header>
     <router-view></router-view>
     <page-footer></page-footer>
   </div>
+</v-app>
 </template>
 <script>
 import AdminLayout from "./components/Adminlte/Layout";
+import DarkLayout from "./components/Admin/DarkLayout";
 import CrudModels from "./CrudModels";
 import PageHeader from "./components/Common/PageHeader";
 import PageFooter from "./components/Common/PageFooter";
@@ -21,6 +24,7 @@ import PageFooter from "./components/Common/PageFooter";
 export default {
   name: "app",
   components: {
+    DarkLayout,
     AdminLayout,
     PageHeader,
     PageFooter

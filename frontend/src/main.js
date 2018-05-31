@@ -1,22 +1,12 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import store from "./store";
-//import Vuetify from "vuetify";
-//import BootstrapVue from "bootstrap-vue";
+import Vuetify from "vuetify";
 import Icon from "vue-awesome/components/Icon";
-import ElementUI from "element-ui";
-//import iView from "iview";
-//import "iview/dist/styles/iview.css";
-import "./element-variables.scss";
-//import "element-ui/lib/theme-chalk/index.css";
-//import "vuetify/dist/vuetify.min.css";
+
+import "vuetify/dist/vuetify.min.css";
 import "vue-awesome/icons";
-import "bootstrap/dist/css/bootstrap.css";
-//import "bootstrap-vue/dist/bootstrap-vue.css";
-//import locale from "iview/dist/locale/en-US";
 
 var VueTruncate = require("vue-truncate-filter");
 
@@ -34,11 +24,8 @@ Vue.filter("capitalize", function(value) {
 });
 
 Vue.use(VueTruncate);
-//Vue.use(BootstrapVue);
 Vue.component("icon", Icon);
-Vue.use(ElementUI);
-//Vue.use(iView, { locale });
-//Vue.use(Vuetify);
+Vue.use(Vuetify);
 
 Vue.config.productionTip = false;
 
