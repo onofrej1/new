@@ -59,8 +59,8 @@ const menuItem = {
     ],
     list: [
         { field: "title", label: "Title" },
-        { label: "Parent", render: params => params.row.parent.title },
-        { label: "Page", render: params => params.row.page.title }
+        { field: "parent", label: "Parent", render: params => params.item.parent && params.item.parent.title },
+        { field: "page", label: "Page", render: params => params.item.page && params.item.page.title }
     ]
 };
 

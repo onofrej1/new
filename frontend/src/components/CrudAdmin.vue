@@ -1,22 +1,51 @@
 <template>
-      <v-container fluid>
-        <v-layout row>
-          <v-flex v-if="activeForm" offset-md3 md6>
-            <v-card class="elevation-12">
-            <v-toolbar>
-              <v-toolbar-title>{{ modelName }}</v-toolbar-title>
-            </v-toolbar>
-
-            <v-card-text>
-            <v-form v-model="valid">
+  <v-container fluid>
+    <v-layout row>
+      <v-flex v-if="activeForm" offset-md3 md6>
+        <v-card class="elevation-12">
+          <v-toolbar>
+            <v-toolbar-title>{{ activeResource }}</v-toolbar-title>
+          </v-toolbar>
+  
+          <v-card-text>
+            <v-form>
               <template v-for="field in form">
-                <v-text-field :key="field.name" 
-                v-if="field.type==='text'" 
-                v-model="model[field.name]" 
-                :label="field.label || field.name"
-                required>
-                </v-text-field>
-              </template>
+                        <v-text-field :key="field.name" 
+                        v-if="field.type==='text'" 
+                        v-model="model[field.name]" 
+                        :label="field.label || field.name"
+                        required>
+                        </v-text-field>
+      
+      <v-text-field :key="field.name" 
+                        v-if="field.type==='editor'" 
+                        class="editor"
+                        v-model="model[field.name]" 
+                        :label="field.label || field.name"
+                        textarea
+                        required>
+                        </v-text-field>
+      
+                        <div v-if="field.type==='pivotRelation'">
+                          <p>{{ field.label || field.name }}</p>
+                        <v-layout row wrap >                  
+                        <v-flex md4 v-for="option in getOptions(field.resourceTable, field.show)">
+                        <v-checkbox 
+                          v-model="model[field.name]"                     
+                          :label="option.text" 
+                          :value="option.value"></v-checkbox>
+                      </v-flex>
+                        </v-layout>
+                        </div>
+              
+                <v-select
+                 v-if="field.type==='relation'" 
+                :key="field.name"
+                :items="getOptions(field.resourceTable, field.show)"
+                v-model="model[field.name]"
+                :label="field.label || field.name"                    
+              ></v-select>
+</template>
               </v-form>
               </v-card-text>
               <v-card-actions>
@@ -24,21 +53,38 @@
               <v-btn color="primary" @click="onSubmit">
                 Save
               </v-btn>
-              <v-btn @click="clear">Cancel</v-btn>            
+              <v-btn >Cancel</v-btn>            
             </v-card-actions>
             </v-card>
           </v-flex>
           <v-flex v-if="!activeForm" offset-md1 md10>
 
+<v-card>
+    <v-card-title>
+      <v-btn small color="primary" @click="createItem({})">
+        <v-icon>add</v-icon>Add new
+      </v-btn>
+      <v-spacer></v-spacer>
+  <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+      </v-card-title>
+
         <v-data-table d-block  :headers="table" :items="activeResourceData" hide-actions class="elevation-1">
-          <template slot="items" slot-scope="props">
-            <td class="text-xs-right" :key="field.value" v-for="field in table">{{ props.item[field.value] }}</td>
-            <td class="text-xs-right">
-              <v-btn small color="primary" @click="editItem(props.item)">Edit</v-btn>
-              <v-btn small color="error">Delete</v-btn>
-            </td>
-          </template>
+<template slot="items" slot-scope="props">
+  <td class="text-xs-right" :key="field.value" v-for="field in table">
+    {{ field.render ? field.render(props) : props.item[field.value] }}</td>
+  <td class="text-xs-right">
+    <v-btn small color="primary" @click="editItem(props.item)">Edit</v-btn>
+    <v-btn small color="error">Delete</v-btn>
+  </td>
+</template>
         </v-data-table>
+        </v-card>
           </v-flex>
         </v-layout>
       </v-container>
@@ -48,6 +94,23 @@
 import axios from "axios";
 import CrudModels from "./../CrudModels";
 import Editor from "@tinymce/tinymce-vue";
+import { quillEditor } from "vue-quill-editor";
+
+var quill = new Quill("#editor-container", {
+  modules: {
+    toolbar: [
+      [
+        {
+          header: [1, 2, false]
+        }
+      ],
+      ["bold", "italic", "underline"],
+      ["image", "code-block"]
+    ]
+  },
+  placeholder: "Compose an epic...",
+  theme: "snow" // or 'bubble'
+});
 
 import { mapState, mapActions, mapGetters } from "vuex";
 
@@ -59,11 +122,12 @@ export default {
       models: CrudModels,
       table: [],
       form: [],
-      model: {}
+      model: {},                  
     };
   },
   components: {
-    editor: Editor
+    editor: Editor,
+    quillEditor
   },
   computed: {
     ...mapState(["activeResource", "resourceData"]),
@@ -131,15 +195,16 @@ export default {
       ];
       for (let prop of this.resourceSettings.list) {
         this.table.push({
+          render: prop.render,
           text: prop.field,
           value: prop.field,
           align: "right"
         });
       }
       /*this.table.push({
-        text: 'action',
-        class: 'text-xs-right'
-      });*/
+                text: 'action',
+                class: 'text-xs-right'
+              });*/
     },
     buildForm(row) {
       this.form = [

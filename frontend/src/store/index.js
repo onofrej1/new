@@ -9,7 +9,7 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default new Vuex.Store({
   state: {
-    apiUrl: "http://localhost/web/laravel/public",
+    apiUrl: "http://nessbox.local/laravel/public",
     activeResource: "page",
     resourceData: {}
   },

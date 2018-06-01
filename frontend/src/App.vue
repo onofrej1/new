@@ -14,12 +14,15 @@
   </div>
 </v-app>
 </template>
+
+
 <script>
 import AdminLayout from "./components/Adminlte/Layout";
 import DarkLayout from "./components/Admin/DarkLayout";
 import CrudModels from "./CrudModels";
 import PageHeader from "./components/Common/PageHeader";
 import PageFooter from "./components/Common/PageFooter";
+
 
 export default {
   name: "app",
